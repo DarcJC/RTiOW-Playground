@@ -12,6 +12,7 @@ int main() {
         << "255" << std::endl;
 
     for (int i=0; i<height; ++i) { // line scan
+        std::cerr << "\rScanning remaining: " << i << ' ' << std::flush;
         for (int j=0; j<width; ++j) {
             auto r = (double)i / height;
             auto g = (double)j / width;
@@ -22,6 +23,7 @@ int main() {
             << static_cast<int>(b * 255.999) << std::endl;
         }
     }
+    std::cerr << "\nDone.\n";
 
     fclose(stdin);
 
