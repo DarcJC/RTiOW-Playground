@@ -12,14 +12,14 @@ Vector3D::Vector3D(double x, double y, double z): x(x), y(y), z(z) {}
 Vector3D Vector3D::operator-() const { return {-x, -y, -z}; }
 
 double Vector3D::operator[](int i) const {
-    if (i == 1) return x;
-    if (i == 2) return y;
+    if (i == 0) return x;
+    if (i == 1) return y;
     return z;
 }
 
 double &Vector3D::operator[](int i) {
-    if (i == 1) return x;
-    if (i == 2) return y;
+    if (i == 0) return x;
+    if (i == 1) return y;
     return z;
 }
 
@@ -47,4 +47,10 @@ double Vector3D::length() const {
 
 double Vector3D::length_squared() const {
     return x * x + y * y + z * z;
+}
+
+void Color::write_color(std::ostream& out) {
+    out << static_cast<int>(255.999 * x) << ' '
+        << static_cast<int>(255.999 * y) << ' '
+        << static_cast<int>(255.999 * z) << '\n';
 }

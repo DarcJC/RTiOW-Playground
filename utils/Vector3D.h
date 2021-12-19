@@ -5,6 +5,7 @@
 #ifndef RAYTRACINGINONEWEEKEND_VECTOR3D_H
 #define RAYTRACINGINONEWEEKEND_VECTOR3D_H
 
+#include <ostream>
 
 class Vector3D {
 public:
@@ -27,6 +28,11 @@ public:
 };
 
 using Point3D = Vector3D;
-using Color = Vector3D;
+
+class Color: Vector3D {
+    using Vector3D::Vector3D;
+
+    void write_color(std::ostream& out);
+};
 
 #endif //RAYTRACINGINONEWEEKEND_VECTOR3D_H
