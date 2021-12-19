@@ -1,4 +1,5 @@
 #include <iostream>
+#include "utils/Vector3D.h"
 
 int main() {
     freopen("test.ppm", "w", stdout);
@@ -14,13 +15,8 @@ int main() {
     for (int i=0; i<height; ++i) { // line scan
         std::cerr << "\rScanning remaining: " << i << ' ' << std::flush;
         for (int j=0; j<width; ++j) {
-            auto r = (double)i / height;
-            auto g = (double)j / width;
-            auto b = 0.25;
-
-            std::cout << static_cast<int>(r * 255.999) << ' '
-            << static_cast<int>(g * 255.999) << ' '
-            << static_cast<int>(b * 255.999) << std::endl;
+            Color color(double(i) / height, double (j) / width, 0.25);
+            color.write_color(std::cout);
         }
     }
     std::cerr << "\nDone.\n";

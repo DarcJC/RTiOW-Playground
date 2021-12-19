@@ -32,6 +32,7 @@ using Point3D = Vector3D;
 class Color: Vector3D {
     using Vector3D::Vector3D;
 
+public:
     void write_color(std::ostream& out);
 };
 
