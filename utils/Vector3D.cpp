@@ -54,3 +54,47 @@ void Color::write_color(std::ostream& out) {
         << static_cast<int>(255.999 * y) << ' '
         << static_cast<int>(255.999 * z) << '\n';
 }
+
+std::ostream &operator<<(std::ostream &out, const Vector3D &v) {
+    return out << v.x << ' ' << v.y << ' ' << v.z;
+}
+
+Vector3D operator+(const Vector3D &u, const Vector3D &v) {
+    return {u.x + v.x, u.y + v.y, u.z + v.z};
+}
+
+Vector3D operator-(const Vector3D &u, const Vector3D &v) {
+    return {u.x - v.x, u.y - v.y, u.z - v.z};
+}
+
+Vector3D operator*(const Vector3D &u, const Vector3D &v) {
+    return {u.x * v.x, u.y * v.y, u.z * v.z};
+}
+
+Vector3D operator*(double t, const Vector3D &v) {
+    return { t * v.x, t * v.y, t * v.z };
+}
+
+Vector3D operator*(const Vector3D &v, double t) {
+    return t * v;
+}
+
+Vector3D operator/(const Vector3D &v, double t) {
+    return (1 / t) * v;
+}
+
+double dot(const Vector3D &u, const Vector3D &v) {
+    return u.x * v.x + u.y * v.y + u.z * v.z;
+}
+
+Vector3D cross(const Vector3D &u, const Vector3D &v) {
+    return {
+        u.y * v.z - u.z * v.y,
+        u.z * v.x - u.x * v.z,
+        u.x * v.y - u.y * v.x
+    };
+}
+
+Vector3D unit(const Vector3D &v) {
+    return v / v.length();
+}
