@@ -49,12 +49,6 @@ double Vector3D::length_squared() const {
     return x * x + y * y + z * z;
 }
 
-void Color::write_color(std::ostream& out) {
-    out << static_cast<int>(255.999 * x) << ' '
-        << static_cast<int>(255.999 * y) << ' '
-        << static_cast<int>(255.999 * z) << '\n';
-}
-
 std::ostream &operator<<(std::ostream &out, const Vector3D &v) {
     return out << v.x << ' ' << v.y << ' ' << v.z;
 }
@@ -97,4 +91,10 @@ Vector3D cross(const Vector3D &u, const Vector3D &v) {
 
 Vector3D unit(const Vector3D &v) {
     return v / v.length();
+}
+
+void write_color(std::ostream &out, Color& color) {
+    out << static_cast<int>(255.999 * color.x) << ' '
+        << static_cast<int>(255.999 * color.y) << ' '
+        << static_cast<int>(255.999 * color.z) << '\n';
 }

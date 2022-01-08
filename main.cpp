@@ -1,10 +1,29 @@
 #include <iostream>
 #include "utils/Vector3D.h"
+#include "utils/Ray.h"
+
+Color ray_color(const Ray& r) {
+    Vector3D unit_direction = unit(r.getDirection());
+    auto t = 0.5 * (unit_direction.y + 1.0);
+    return (1.0 - t) * Color(1.0, 1.0, 1.0) + t * Color(.5, .7, 1.0);
+}
 
 int main() {
     freopen("test.ppm", "w", stdout);
 
-    const int width = 255, height = 255;
+    // Image
+    const auto aspect_ratio = 16.0 / 9.0;
+    const int width = 255, height = static_cast<int>(width / aspect_ratio);
+
+    // Camera
+    auto viewport_height = 2.0;
+    auto viewport_width = viewport_height * aspect_ratio;
+    auto focal_length = 1.0;
+
+    const auto origin = Point3D();
+    const auto horizontal = Vector3D(viewport_width, 0, 0);
+    const auto vertical = Vector3D(0, viewport_height, 0);
+    const auto lower_left_corner = origin - horizontal / 2 - vertical / 2 - Vector3D(0, 0, focal_length);
 
     std::cout << "P3" << std::endl
         << "# This is an image in PPM format\n"
@@ -15,8 +34,11 @@ int main() {
     for (int i=0; i<height; ++i) { // line scan
         std::cerr << "\rScanning remaining: " << i << ' ' << std::flush;
         for (int j=0; j<width; ++j) {
-            Color color(double(i) / height, double (j) / width, 0.25);
-            color.write_color(std::cout);
+            auto u = double (i) / (width - 1);
+            auto v = double (j) / (height - 1);
+            Ray r(origin, lower_left_corner + u * horizontal + v * vertical - origin);
+            Color color = ray_color(r);
+            write_color(std::cout, color);
         }
     }
     std::cerr << "\nDone.\n";

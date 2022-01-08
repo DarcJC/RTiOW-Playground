@@ -49,11 +49,8 @@ Vector3D unit(const Vector3D& v);
 
 using Point3D = Vector3D;
 
-class Color: Vector3D {
-    using Vector3D::Vector3D;
+using Color = Vector3D;
 
-public:
-    void write_color(std::ostream& out);
-};
+void write_color(std::ostream& out, Color& color);
 
 #endif //RAYTRACINGINONEWEEKEND_VECTOR3D_H
