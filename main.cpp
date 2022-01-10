@@ -1,10 +1,29 @@
 #include <iostream>
+#include <cmath>
 #include "utils/Vector3D.h"
 #include "utils/Ray.h"
 
+double hit_sphere(const Point3D& center, double radius, const Ray& r) {
+    const auto a_minus_c = r.getOrigin() - center;
+    const auto a = dot(r.getDirection(), r.getDirection());
+    const auto b = dot(2.0 * r.getDirection(), a_minus_c);
+    const auto c = dot(a_minus_c, a_minus_c) - (radius * radius);
+    const auto discriminant = b * b - (4 * a * c);
+    if (discriminant < .0) {
+        return -1.0;
+    } else {
+        return (-b - sqrt(discriminant)) / (2.0 * a);
+    }
+}
+
 Color ray_color(const Ray& r) {
+    auto t = hit_sphere(Point3D(0, 0, -1), 0.5, r);
+    if (t > 0.0) {
+        Vector3D normal = unit(r.at(t) - Vector3D(0, 0, -1));
+        return 0.5 * Color(normal.x + 1, normal.y + 1, normal.z + 1);
+    }
     Vector3D unit_direction = unit(r.getDirection());
-    auto t = 0.5 * (unit_direction.y + 1.0);
+    t = 0.5 * (unit_direction.y + 1.0);
     return (1.0 - t) * Color(1.0, 1.0, 1.0) + t * Color(.5, .7, 1.0);
 }
 
@@ -13,7 +32,7 @@ int main() {
 
     // Image
     const auto aspect_ratio = 16.0 / 9.0;
-    const int width = 255, height = static_cast<int>(width / aspect_ratio);
+    const int width = 400, height = static_cast<int>(width / aspect_ratio);
 
     // Camera
     auto viewport_height = 2.0;
@@ -31,9 +50,9 @@ int main() {
         << width << ' ' << height << std::endl
         << "255" << std::endl;
 
-    for (int i=0; i<height; ++i) { // line scan
-        std::cerr << "\rScanning remaining: " << i << ' ' << std::flush;
-        for (int j=0; j<width; ++j) {
+    for (int j=height-1; j>=0; --j) { // line scan
+        std::cerr << "\rScanning remaining: " << j << ' ' << std::flush;
+        for (int i=0; i<width; ++i) {
             auto u = double (i) / (width - 1);
             auto v = double (j) / (height - 1);
             Ray r(origin, lower_left_corner + u * horizontal + v * vertical - origin);
